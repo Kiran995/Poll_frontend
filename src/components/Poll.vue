@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>Poll data</h1>
+    <h1>Hello</h1>
     <ul v-for="poll in polls" :key="poll.id">
       <h3>{{poll.poll_name}}</h3> 
     </ul>
@@ -18,7 +18,7 @@
     },
     mounted() {
       var self = this;
-      axios.get('http://localhost:8000/web-api/v1/polls/')
+      axios.get('http://localhost:8000/web-api/v1/questions/')
       .then(function(response){
         self.polls = response.data.results;
         console.log('Data: ', response.data);

@@ -1,23 +1,44 @@
 <template>
   <v-app>
-    <v-toolbar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
-      </v-toolbar-title>
+    <v-toolbar>
+      <v-toolbar-title>Poll</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn
-        flat
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-      </v-btn>
+      <v-toolbar-items class="hidden-sm-and-down">
+        <v-btn flat>Dashboard</v-btn>
+        <v-btn flat>About</v-btn>
+        <v-btn flat>Logout</v-btn>
+      </v-toolbar-items>
     </v-toolbar>
-
     <v-content>
       <HelloWorld/>
     </v-content>
+    <v-footer
+    dark
+    height="auto"
+    >
+    <v-card
+      class="flex"
+      flat
+      tile
+    >
+      <v-card-title class="teal">
+        <strong class="subheading">Get connected with us on social networks!</strong>
+
+        <v-spacer></v-spacer>
+
+        <v-btn
+          v-for="(icon, link) in icons"
+          :key="icon"
+          class="mx-3"
+          dark
+          icon
+        >
+          <v-icon size="24px">{{ icon }}</v-icon>
+          <p>{{link}}</p>
+        </v-btn>
+      </v-card-title>
+    </v-card>
+  </v-footer>
   </v-app>
 </template>
 
@@ -29,10 +50,14 @@ export default {
   components: {
     HelloWorld
   },
-  data () {
-    return {
-      //
-    }
-  }
+  data: () => ({
+      icons: [
+        'fab fa-facebook',
+        'fab fa-twitter',
+        'fab fa-google-plus',
+        'fab fa-linkedin',
+        'fab fa-instagram'
+      ]
+    })
 }
 </script>
