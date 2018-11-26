@@ -4,14 +4,13 @@
       <v-toolbar-title>Poll</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn flat>Dashboard</v-btn>
+        <router-link to='/'>Dashboard</router-link>
+        <router-link to='/Poll/2'>Poll</router-link>
         <v-btn flat>About</v-btn>
         <v-btn flat>Logout</v-btn>
       </v-toolbar-items>
     </v-toolbar>
-    <v-content>
-      <HelloWorld/>
-    </v-content>
+    <router-view></router-view>
     <v-footer
     dark
     height="auto"
@@ -43,12 +42,13 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
+import Poll from './components/Poll'
+import Questions from './components/Questions'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Poll
   },
   data: () => ({
       icons: [
