@@ -1,10 +1,22 @@
 <template>
   <v-container>
     <h1>Poll data</h1>
-    <ul v-for="poll in polls" :key="poll.id">
-      <button v-on:click="show_questions(poll.id, poll.poll_name)">{{poll.poll_name}}</button> 
-    </ul>
-    
+    <p v-for="poll in polls" :key="poll.id">
+      <v-btn color="success" v-on:click="show_questions(poll.id, poll.poll_name)">{{poll.poll_name}}</v-btn> 
+    </p>
+    <v-fab-transition>
+      <v-btn class="fab-btn"
+        v-show="!hidden"
+        color="pink"
+        dark
+        absolute
+        bottom
+        right
+        fab
+      >
+        <v-icon>add</v-icon>
+      </v-btn>
+    </v-fab-transition>
     <!-- <h3>{{polls}}</h3> -->
   </v-container>
 </template>
@@ -41,5 +53,7 @@
 </script>
 
 <style>
-
+  .fab-btn{
+    margin: 0 0 120px 80px;
+  }
 </style>

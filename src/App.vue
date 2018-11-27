@@ -4,8 +4,7 @@
       <v-toolbar-title>Poll</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
-        <router-link to='/'>Dashboard</router-link>
-        <router-link to='/Poll/2'>Poll</router-link>
+        <v-btn flat>Dashboard</v-btn>
         <v-btn flat>About</v-btn>
         <v-btn flat>Logout</v-btn>
       </v-toolbar-items>
