@@ -21,7 +21,6 @@
       axios.get('http://localhost:8000/web-api/v1/questions?poll=' + this.$route.params.id)
       .then(function(response){
         self.questions = response.data.results;
-        console.log('Data: ', response.data);
       })
       .catch(function(error){
         console.log("Error:", error);

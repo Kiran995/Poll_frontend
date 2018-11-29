@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import Questions from '@/components/Questions.vue'
 import Poll from '@/components/Poll.vue'
 import Options from '@/components/Options.vue'
+import Add_Poll from '@/components/Add_Poll.vue'
 
 
 Vue.use(Router)
@@ -35,6 +36,11 @@ export default new Router({
       path: '/questions/:name/:id',
       name: 'option',
       component: Options,
+    },
+    {
+      path: '/poll/add',
+      name: 'Add Poll',
+      component: AddPoll
     }
   ]
 })

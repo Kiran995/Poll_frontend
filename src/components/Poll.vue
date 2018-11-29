@@ -5,8 +5,8 @@
       <v-btn color="success" v-on:click="show_questions(poll.id, poll.poll_name)">{{poll.poll_name}}</v-btn> 
     </p>
     <v-fab-transition>
+      <add-poll></add-poll>
       <v-btn class="fab-btn"
-        v-show="!hidden"
         color="pink"
         dark
         absolute
@@ -14,7 +14,7 @@
         right
         fab
       >
-        <v-icon>add</v-icon>
+        <v-icon @click="$router.push({name:'Add Poll'})">add</v-icon>
       </v-btn>
     </v-fab-transition>
     <!-- <h3>{{polls}}</h3> -->
@@ -23,6 +23,7 @@
 
 <script>
   import Questions from '@/components/Questions.vue'
+  import AddPoll from '@/components/AddPoll.vue'
   import axios from 'axios'
   export default {
     // components:{
@@ -31,7 +32,11 @@
     data() {
       return{
         polls: [],
+        showAddModal: false
       }
+    },
+    components: {
+      AddPoll
     },
     mounted() {
       var self = this;

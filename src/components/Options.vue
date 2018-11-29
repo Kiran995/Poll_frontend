@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <h3>{{$route.params.name}} </h3>
+    <p>{{checkedValue}}</p>
     <!-- <form id="selected_value" @submit.prevent='processForm'> -->
       <!-- <select v-model="checkedValue"  menu-props="auto"
           label="Select"
@@ -45,8 +46,8 @@
         this.checkedValue.count++;
         console.log(this.checkedValue);
         axios({
-          method: 'post',
-          url: 'http://localhost:8000/web-api/v1/options/?Create',
+          method: 'PUT',
+          url: 'http://localhost:8000/web-api/v1/options/'+ this.checkedValue.id + '/',
           data: this.checkedValue
         })
         .then(function(response){
