@@ -54,6 +54,7 @@
           console.log(response);
           console.log('Done');
         })
+        alert('Submitted')
       }
     }
   }

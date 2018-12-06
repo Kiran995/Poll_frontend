@@ -4,7 +4,7 @@ import Router from 'vue-router'
 import Questions from '@/components/Questions.vue'
 import Poll from '@/components/Poll.vue'
 import Options from '@/components/Options.vue'
-import Add_Poll from '@/components/Add_Poll.vue'
+import AddPoll from '@/components/AddPoll.vue'
 
 
 Vue.use(Router)
