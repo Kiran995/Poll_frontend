@@ -58,6 +58,7 @@
       },
       changeModal(showAddModal){
         this.showAddModal = false;
+        this.$router.go()
       }
     }
   }

@@ -5,6 +5,7 @@ import Questions from '@/components/Questions.vue'
 import Poll from '@/components/Poll.vue'
 import Options from '@/components/Options.vue'
 import AddPoll from '@/components/AddPoll.vue'
+import LoginForm from '@/components/Login/LoginForm.vue'
 
 
 Vue.use(Router)
@@ -15,6 +16,12 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'Login',
+      component: LoginForm,
+      meta: {anonymous:true}
+    },
+    {
+      path: '/poll',
       name: 'poll',
       component: Poll
     },

@@ -41,13 +41,15 @@
 </template>
 
 <script>
-import Poll from './components/Poll'
+// import Poll from './components/Poll'
+import LoginForm from '@/components/Login/LoginForm'
 import Questions from './components/Questions'
 
 export default {
   name: 'App',
   components: {
-    Poll
+    // Poll
+    LoginForm
   },
   data: () => ({
       icons: [

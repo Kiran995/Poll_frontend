@@ -33,7 +33,7 @@
     },
     methods: {
       addNewPoll () {
-        axios.post('http://localhost:8000/web-api/v1/polls/?Create', {poll_name: this.poll_name})
+        axios.post('http://localhost:8000/web-api/v1/polls/', {poll_name: this.poll_name})
         .then(function(response){
           console.log(response);
         })
