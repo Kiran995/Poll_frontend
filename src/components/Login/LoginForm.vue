@@ -1,18 +1,20 @@
 <template>
+  <div>
     <v-card class="div-form">
         <h2>LOGIN</h2>
         <v-form ref="form" v-model="valid" lazy-validation>
             <v-text-field
-            v-model="name"
+            v-model="username"
             :rules="nameRules"
-            :counter="20"
+            :counter="10"
             label="Name"
             required
             ></v-text-field>
             <v-text-field
-            v-model="email"
-            :rules="emailRules"
-            label="E-mail"
+            v-model="password"
+            :rules="passwordRules"
+            :type="passwordFieldType"
+            label="Password"
             required
             ></v-text-field>
             <v-btn
@@ -24,6 +26,7 @@
             <v-btn @click="clear">clear</v-btn>
         </v-form>
     </v-card>
+  </div>
 </template>
 <script>
   import axios from 'axios'
@@ -31,26 +34,37 @@
   export default {
     data: () => ({
       valid: true,
-      name: '',
+      token: '',
+      error: '',
+      username: '',
       nameRules: [
         v => !!v || 'Name is required',
         v => (v && v.length <= 10) || 'Name must be less than 10 characters'
       ],
-      email: '',
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+/.test(v) || 'E-mail must be valid'
+      password: '',
+      passwordFieldType: 'password',
+      passwordRules: [
+        v => !!v || 'Password is required',
+        v => (v && v.length >= 4) || 'Password must be greater than 4 characters'
       ],
       select: null,
     }),
-
     methods: {
       submit () {
         if (this.$refs.form.validate()) {
           // Native form submission is not yet supported
-          axios.post('/api/submit', {
-            name: this.name,
-            email: this.email,
+          axios.post('http://localhost:8000/web-api/v1/token-auth/', {
+            username: this.username,
+            password: this.password,
+          })
+          .then(response => {
+            this.token = response.data['token']
+            console.log(response.data['token'])
+            this.$emit('error-raised', this.token)
+          })
+          .catch(error => {
+            this.error = error
+            this.$emit('error-raised', error)
           })
         }
       },
