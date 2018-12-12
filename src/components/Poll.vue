@@ -39,17 +39,16 @@
       }
     },
     mounted(){
-      var self = this;
-      axios.get('http://localhost:8000/web-api/v1/polls/')
-        .then(function(response){
-          self.polls = response.data.results;
+      axios.get('/polls/')
+        .then((response)=>{
+          this.polls = response.data.results;
           console.log('Data: ', response.data);
         })
-        .catch(function(error){
+        .catch((error)=>{
           console.log("Error:", error);
         })
     },
-    components: {
+    components: { 
       AddPoll
     },
     methods:{

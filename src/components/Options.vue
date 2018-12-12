@@ -32,7 +32,7 @@
     },
     mounted() {
       var self = this;
-      axios.get('http://localhost:8000/web-api/v1/options/?question=' + this.$route.params.id)
+      axios.get('/options/?question=' + this.$route.params.id)
       .then(function(response){
         self.options = response.data.results
       })
@@ -47,7 +47,7 @@
         console.log(this.checkedValue);
         axios({
           method: 'PUT',
-          url: 'http://localhost:8000/web-api/v1/options/'+ this.checkedValue.id + '/',
+          url: '/options/'+ this.checkedValue.id + '/',
           data: this.checkedValue
         })
         .then(function(response){

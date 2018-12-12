@@ -81,9 +81,24 @@ export default {
       'fab fa-instagram'
     ]
   }),
+  created() {
+    if(this.token){
+      axios.defaults.headers['Authorization'] = `JWT ${this.token}`
+    }
+    axios.interceptors.request.use((config) => {
+    let user = localStorage.getItem('user-token')
+    if(user){
+        console.log(user)
+        config.headers.Authorization = user.token
+    }
+    return config
+    }, (err) => {
+      console.log(err)
+    return Promise.reject(err)
+    })
+  },
   methods:{
     showsnackbar(params){
-      debugger;
       if(params.response){
         if(params.response.status==400){
           this.snackbarVisible = true;
@@ -97,6 +112,8 @@ export default {
       else{
         this.token = params;
         this.$router.push({name:'poll'})
+        localStorage.setItem('user-token',this.token)
+        
       }
     }
   }
