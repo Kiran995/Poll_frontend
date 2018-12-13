@@ -58,13 +58,13 @@
             password: this.password,
           })
           .then(response => {
-            this.token = response.data['token']
+            let token = response.data['token']
             console.log(response.data['token'])
-            this.$emit('error-raised', this.token)
+            this.$emit('login-success', {"token":token,"status":"success","message":"Login Success"})
           })
           .catch(error => {
             this.error = error
-            this.$emit('error-raised', error)
+            this.$emit('error-raised', {"status":"error","message":"failed"})
           })
         }
       },

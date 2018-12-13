@@ -7,8 +7,8 @@ import Options from '@/components/Options.vue'
 import AddPoll from '@/components/AddPoll.vue'
 import LoginForm from '@/components/Login/LoginForm.vue'
 
-
 Vue.use(Router)
+// window.axios = require('axios')
 
 export default new Router({
   mode: 'history',

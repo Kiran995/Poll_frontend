@@ -17,6 +17,7 @@ axios.defaults.baseURL = 'http://localhost:8000/web-api/v1'
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
+window.axios = require('axios')
 
 new Vue({
   router,

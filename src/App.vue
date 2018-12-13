@@ -9,7 +9,7 @@
         <v-btn flat>Logout</v-btn>
       </v-toolbar-items>
     </v-toolbar>
-    <router-view v-on:error-raised="showsnackbar"></router-view>
+    <router-view v-on:error-raised="showsnackbar($event)" v-on:login-success="showsnackbar($event);saveToken($event)"></router-view>
     <v-footer v-if='this.token'
     dark
     height="auto"
@@ -98,23 +98,39 @@ export default {
     })
   },
   methods:{
-    showsnackbar(params){
-      if(params.response){
-        if(params.response.status==400){
-          this.snackbarVisible = true;
-          this.message = 'Invalid username or password';
-          this.timeout = 4000;
-          setTimeout(()=>{
-            this.snackbarVisible = false;
-          }, this.timeout);
-        }
-      }
-      else{
-        this.token = params;
+    showsnackbar(event){
+      debugger;
+      if(event.status=="success"){
         this.$router.push({name:'poll'})
-        localStorage.setItem('user-token',this.token)
-        
       }
+      if(event.status=="error"){
+        this.snackbarVisible = true;
+        debugger;
+        this.message = 'Invalid username or password';
+        this.timeout = 4000;
+        setTimeout(()=>{
+          this.snackbarVisible = false;
+        }, this.timeout);
+      }
+      // if(params.response){
+      //   if(params.response.status==400){
+      //     this.snackbarVisible = true;
+      //     this.message = 'Invalid username or password';
+      //     this.timeout = 4000;
+      //     setTimeout(()=>{
+      //       this.snackbarVisible = false;
+      //     }, this.timeout);
+      //   }
+      // }
+      // else{
+      //   this.token = params;
+      //   this.$router.push({name:'poll'})
+      //   localStorage.setItem('user-token',this.token)
+        
+      // }
+    },
+    saveToken(event){
+      localStorage.setItem('user-token',event.token)
     }
   }
 }
