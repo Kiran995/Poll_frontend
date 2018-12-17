@@ -17,7 +17,10 @@ axios.defaults.baseURL = 'http://localhost:8000/web-api/v1'
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
-window.axios = require('axios')
+
+let token = localStorage.getItem('user-token')
+const instance = axios.create()
+instance.defaults.headers.common['Authorization'] = `JWT ${token}`;
 
 new Vue({
   router,

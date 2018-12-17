@@ -6,11 +6,12 @@ import Poll from '@/components/Poll.vue'
 import Options from '@/components/Options.vue'
 import AddPoll from '@/components/AddPoll.vue'
 import LoginForm from '@/components/Login/LoginForm.vue'
+import store from './store'
 
 Vue.use(Router)
 // window.axios = require('axios')
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -23,7 +24,8 @@ export default new Router({
     {
       path: '/poll',
       name: 'poll',
-      component: Poll
+      component: Poll,
+      meta:{auth:true}
     },
     // {
     //   path: '/about',
@@ -37,20 +39,48 @@ export default new Router({
       path: '/poll/:name/:id',
       name: 'question',
       component: Questions,
+      meta:{auth:true}
       // props: true
     },
     {
       path: '/questions/:name/:id',
       name: 'option',
       component: Options,
+      meta:{auth:true}
     },
     {
       path: '/poll/add',
       name: 'Add Poll',
-      component: AddPoll
+      component: AddPoll,
+      meta:{auth:true}
     }
   ]
 })
+
+// todo factorize this below function
+// router.beforeEach((to, from, next) => {
+//   const authRequired = to.matched.some((route) => route.meta.auth)
+//   const anonymousRequired = to.matched.some((route) => route.meta.anonymous)
+//   // const groups = to.matched.some((route) => route.meta.groups ? route.meta.groups : [])
+//   if (authRequired) {
+//     if (store.token) {
+//       alert('You are already logged in')
+//       next('/poll/')
+//     } else {
+//       next('/')
+//     }
+//   } else if (anonymousRequired) {
+//     if (store.token) {
+//       next('/poll/')
+//     } else {
+//       next('/')
+//     }
+//   } else {
+//     next()
+//   }
+// })
+
+export default router
 
 
 

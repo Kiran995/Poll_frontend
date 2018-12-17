@@ -39,7 +39,7 @@
       }
     },
     mounted(){
-      window.axios.get('/polls/')
+      global.axios.get('/polls/')
         .then((response)=>{
           this.polls = response.data.results;
           console.log('Data: ', response.data);
