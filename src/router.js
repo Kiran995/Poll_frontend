@@ -58,27 +58,24 @@ const router = new Router({
 })
 
 // todo factorize this below function
-// router.beforeEach((to, from, next) => {
-//   const authRequired = to.matched.some((route) => route.meta.auth)
-//   const anonymousRequired = to.matched.some((route) => route.meta.anonymous)
-//   // const groups = to.matched.some((route) => route.meta.groups ? route.meta.groups : [])
-//   if (authRequired) {
-//     if (store.token) {
-//       alert('You are already logged in')
-//       next('/poll/')
-//     } else {
-//       next('/')
-//     }
-//   } else if (anonymousRequired) {
-//     if (store.token) {
-//       next('/poll/')
-//     } else {
-//       next('/')
-//     }
-//   } else {
-//     next()
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  const authRequired = to.matched.some((route) => route.meta.auth)
+  const anonymousRequired = to.matched.some((route) => route.meta.anonymous)
+  let user_token = localStorage.getItem('user-token')
+  if (authRequired) {
+    if (user_token) {
+      next()
+    } else {
+      next('/')
+    }
+  } else if (anonymousRequired) {
+    if (user_token) {
+      next('/poll')
+    } else {
+      next()
+    }
+  }
+})
 
 export default router
 
