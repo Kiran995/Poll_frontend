@@ -61,19 +61,14 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   const authRequired = to.matched.some((route) => route.meta.auth)
   const anonymousRequired = to.matched.some((route) => route.meta.anonymous)
-  let user_token = localStorage.getItem('user-token')
-  if (authRequired) {
-    if (user_token) {
-      next()
-    } else {
-      next('/')
-    }
-  } else if (anonymousRequired) {
-    if (user_token) {
-      next('/poll')
-    } else {
-      next()
-    }
+  if (authRequired && !store.state.token){
+    alert('Please login first!!!')
+    next('/')
+  } else if (anonymousRequired && store.state.token){
+    alert('You are already logged in!!!')
+    next('/poll')
+  } else {
+    next()
   }
 })
 

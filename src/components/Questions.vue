@@ -4,7 +4,6 @@
     <ul v-for="question in questions" :key="question.id">
       <button v-on:click='show_options(question.id, question.question)'>{{question.question}}</button> 
     </ul>
-    <!-- <h3>{{polls}}</h3> -->
   </v-container>
 </template>
 

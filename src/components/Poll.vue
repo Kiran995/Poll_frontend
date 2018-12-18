@@ -2,9 +2,25 @@
   <v-container>
     <div v-show="!showAddModal">
       <h1>Poll data</h1>
-      <span v-for="poll in polls" :key="poll.id">
-        <v-btn color="success" v-on:click="show_questions(poll.id, poll.poll_name)">{{poll.poll_name}}</v-btn> 
-      </span>
+      <v-card>
+        <v-card-text>
+          <v-layout row wrap>
+            <v-flex xs4>
+              <v-text-field
+              v-model="filter.poll_name__icontains"
+              label="Filter by Poll" class="px-1">
+            </v-text-field>
+            </v-flex>
+          </v-layout>
+        </v-card-text>
+      </v-card>
+      <v-card>
+        <v-card-text :url="geturl">
+          <span v-for="poll in polls" :key="poll.id">
+            <v-btn color="success" v-on:click="show_questions(poll.id, poll.poll_name)">{{poll.poll_name}}</v-btn> 
+          </span>
+        </v-card-text>
+      </v-card>
       <v-fab-transition>
         <v-btn class="fab-btn"
           color="pink"
@@ -20,7 +36,6 @@
     </div>
 
     <add-poll v-if="showAddModal" @close="changeModal(showAddModal)"></add-poll>
-    <!-- <h3>{{polls}}</h3> -->
   </v-container>
 </template>
 
@@ -35,11 +50,32 @@
     data() {
       return{
         polls: [],
-        showAddModal: false
+        showAddModal: false,
+        filter: {},
+        url:''
       }
     },
     mounted(){
-      global.axios.get('/polls/')
+      if(this.filter.poll_name__icontains){
+        geturl()
+      }else{
+        global.axios.get('/polls/')
+          .then((response)=>{
+            this.polls = response.data.results;
+            console.log('Data: ', response.data);
+          })
+          .catch((error)=>{
+            console.log("Error:", error);
+          })
+      }
+    },
+    components: { 
+      AddPoll
+    },
+    computed: {
+      geturl () {
+        let url = `/polls/?poll_name__icontains=${this.filter.poll_name__icontains}`
+        global.axios.get(url)
         .then((response)=>{
           this.polls = response.data.results;
           console.log('Data: ', response.data);
@@ -47,9 +83,7 @@
         .catch((error)=>{
           console.log("Error:", error);
         })
-    },
-    components: { 
-      AddPoll
+      }
     },
     methods:{
       show_questions(id, name){
