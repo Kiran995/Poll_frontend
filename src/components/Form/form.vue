@@ -3,8 +3,8 @@
     <v-form>
       <v-card>
         <v-card-text>
+          <h1>Create New Poll</h1>
           <v-layout row wrap>
-            <h1>Create New Poll</h1>
             <v-flex xs12 sm6 md3>
               <v-text-field
               label="solo"
