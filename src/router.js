@@ -6,6 +6,8 @@ import Poll from '@/components/Poll.vue'
 import Options from '@/components/Options.vue'
 import AddPoll from '@/components/AddPoll.vue'
 import LoginForm from '@/components/Login/LoginForm.vue'
+import form from '@/components/Form/form.vue'
+import AddQuestion from '@/components/AddForm/AddQuestion.vue'
 import store from './store'
 
 Vue.use(Router)
@@ -52,6 +54,18 @@ const router = new Router({
       path: '/poll/add',
       name: 'Add Poll',
       component: AddPoll,
+      meta:{auth:true}
+    },
+    {
+      path: '/createPoll',
+      name: 'Create Poll',
+      component: form,
+      meta:{auth:true}
+    },
+    {
+      path: '/addquest',
+      name: 'quest',
+      component: AddQuestion,
       meta:{auth:true}
     }
   ]

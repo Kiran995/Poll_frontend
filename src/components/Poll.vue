@@ -1,9 +1,9 @@
 <template>
   <v-container>
     <div v-show="!showAddModal">
-      <h1>Poll data</h1>
       <v-card>
         <v-card-text>
+          <h1>Poll data</h1>
           <v-layout row wrap>
             <v-flex xs4>
               <v-text-field
@@ -34,7 +34,6 @@
         </v-btn>
       </v-fab-transition>
     </div>
-
     <add-poll v-if="showAddModal" @close="changeModal(showAddModal)"></add-poll>
   </v-container>
 </template>
@@ -44,9 +43,6 @@
   import AddPoll from '@/components/AddPoll.vue'
   import axios from 'axios'
   export default {
-    // components:{
-    //   'second-component-name': require('./Questions.vue',)
-    // },
     data() {
       return{
         polls: [],
@@ -56,26 +52,7 @@
       }
     },
     mounted(){
-      if(this.filter.poll_name__icontains){
-        geturl()
-      }else{
-        global.axios.get('/polls/')
-          .then((response)=>{
-            this.polls = response.data.results;
-            console.log('Data: ', response.data);
-          })
-          .catch((error)=>{
-            console.log("Error:", error);
-          })
-      }
-    },
-    components: { 
-      AddPoll
-    },
-    computed: {
-      geturl () {
-        let url = `/polls/?poll_name__icontains=${this.filter.poll_name__icontains}`
-        global.axios.get(url)
+      global.axios.get('/polls/')
         .then((response)=>{
           this.polls = response.data.results;
           console.log('Data: ', response.data);
@@ -83,6 +60,24 @@
         .catch((error)=>{
           console.log("Error:", error);
         })
+    },
+    components: { 
+      AddPoll
+    },
+    computed: {
+      geturl () {
+        debugger
+        if(this.filter.poll_name__icontains){
+          let url = `/polls/?poll_name__icontains=${this.filter.poll_name__icontains}`
+          global.axios.get(url)
+          .then((response)=>{
+            this.polls = response.data.results;
+            console.log('Data: ', response.data);
+          })
+          .catch((error)=>{
+            console.log("Error:", error);
+          })
+        }
       }
     },
     methods:{
