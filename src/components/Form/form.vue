@@ -60,19 +60,13 @@
         this.boxes.splice(boxId, 1)
       },
       submit(){
-        let questions = []
-        questions = this.boxes
-        axios.post('http://localhost:8000/web-api/v1/polls/', {poll_name: this.poll})
-        .then(function(response){
-          console.log(response.data['id']);
-          questions.forEach((element) => {
-            let options = []
-            options = element.options
-            axios.post('http://localhost:8000/web-api/v1/questions/', {question: element.question, poll:response.data['id']})
-            .then(function(response){
-              console.log(response);
-              options.forEach((opt)=>{
-                axios.post('http://localhost:8000/web-api/v1/options/', {description:opt.option, count:0, question: response.data['id']})
+        axios.post('/polls/', {poll_name: this.poll})
+        .then((response)=>{
+          this.boxes.forEach((element) => {
+            axios.post('/questions/', {question: element.question, poll:response.data['id']})
+            .then((response)=>{
+              element.options.forEach((opt)=>{
+                axios.post('/options/', {description:opt.option, count:0, question: response.data['id']})
                 .then(function(response){
                   console.log(response);
                 })
