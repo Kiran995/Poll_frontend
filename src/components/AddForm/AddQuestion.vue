@@ -54,6 +54,14 @@
         inputs: []
       }
     },
+    watch: {
+      'question': function(newVal, oldVal){
+        this.$emit('input', newVal)
+      },
+      'inputs': function(newVal, oldVal){
+        this.$emit('input', newVal)
+      }
+    },
     methods: {
       addTextBox(){
         this.inputs.push({

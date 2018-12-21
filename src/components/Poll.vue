@@ -29,8 +29,10 @@
           bottom
           right
           fab
+          @click="$router.push({name:'Create Poll'})"
         >
-          <v-icon @click="showAddModal = true">add</v-icon>
+          <!-- <v-icon @click="showAddModal = true">add</v-icon> -->
+          <v-icon>add</v-icon>
         </v-btn>
       </v-fab-transition>
     </div>
@@ -66,7 +68,6 @@
     },
     computed: {
       geturl () {
-        debugger
         if(this.filter.poll_name__icontains){
           let url = `/polls/?poll_name__icontains=${this.filter.poll_name__icontains}`
           global.axios.get(url)
