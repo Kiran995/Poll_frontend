@@ -43,6 +43,8 @@
     },
     created(){
       this.$on('getData', this.editedData)
+      debugger
+      console.log(this.editedData)
     },
     mounted(){
       global.axios.get('/nestedPolls/')

@@ -72,7 +72,6 @@
     data() {
       return{
         polls: [],
-        editedData: '',
         headers: [
         {
           text: 'Poll Name',
@@ -122,14 +121,16 @@
         this.showAddModal = false;
         this.$router.go()
       },
-      editItem (item) {
+      editItem: function(item) {
         // this.editedIndex = this.polls.indexOf(item)
         // this.editedItem = Object.assign({}, item)
         global.axios.get('/nestedPolls/'+ item.id)
         .then((response)=>{
           console.log(response.data)
-          this.editedData = response.data
+          let editedData = []
+          editedData = response.data
           this.$emit('getData', editedData)
+          this.$router.push({name:'Create Poll'})
         })
         this.dialog = true
       },
