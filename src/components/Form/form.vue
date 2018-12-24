@@ -12,7 +12,6 @@
               placeholder="Add Poll Name"
               solo
             ></v-text-field>
-            <p>Poll:{{poll}}</p>
             </v-flex>
           </v-layout>
           <ul v-for='(box, boxId) in boxes' v-bind:key="boxId">
@@ -35,11 +34,25 @@
     data(){
       return{
         poll: '',
-        boxes: []
+        boxes: [],
+        data: ''
       }
     },
     components:{
       AddQuestions
+    },
+    created(){
+      this.$on('getData', this.editedData)
+    },
+    mounted(){
+      global.axios.get('/nestedPolls/')
+        .then((response)=>{
+          this.data = response.data.results
+          console.log('Data: ', response.data.results);
+        })
+        .catch((error)=>{
+          console.log("Error:", error);
+        })
     },
     methods:{
       updateQuestion(value, index){

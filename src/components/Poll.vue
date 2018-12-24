@@ -5,23 +5,47 @@
         <v-card-text>
           <h1>Poll data</h1>
           <v-layout row wrap>
-            <v-flex xs4>
+            <v-card-actions>
               <v-text-field
-              v-model="filter.poll_name__icontains"
-              label="Filter by Poll" class="px-1">
-            </v-text-field>
-            </v-flex>
+                v-model="filter.poll_name__icontains"
+                label="Filter by Poll" class="px-1">
+              </v-text-field>
+             <v-btn color="primary" dark class="mb-2" @click="$router.push({name:'Create Poll'})">Add Poll</v-btn>
+            </v-card-actions>
           </v-layout>
         </v-card-text>
       </v-card>
       <v-card>
-        <v-card-text :url="geturl">
-          <span v-for="poll in polls" :key="poll.id">
-            <v-btn color="success" v-on:click="show_questions(poll.id, poll.poll_name)">{{poll.poll_name}}</v-btn> 
-          </span>
+        <v-card-text>
+          <v-data-table
+            :headers="headers"
+            :items="polls"
+            class="elevation-1"
+            :url="geturl"
+          >
+            <template slot="items" slot-scope="props">
+              <td v-on:click="show_questions(props.item.id, props.item.poll_name)">{{ props.item.poll_name }}</td>
+              <td class="justify-right layout px-4">
+                <v-icon
+                  small
+                  class="mr-2 mt-3"
+                  @click="editItem(props.item)"
+                >
+                  edit
+                </v-icon>
+                <v-icon
+                  small
+                  class="mt-3"
+                  @click="deleteItem(props.item)"
+                >
+                  delete
+                </v-icon>
+              </td>
+            </template>
+          </v-data-table>
         </v-card-text>
       </v-card>
-      <v-fab-transition>
+      <!-- <v-fab-transition>
         <v-btn class="fab-btn"
           color="pink"
           dark
@@ -30,11 +54,11 @@
           right
           fab
           @click="$router.push({name:'Create Poll'})"
-        >
+        > -->
           <!-- <v-icon @click="showAddModal = true">add</v-icon> -->
-          <v-icon>add</v-icon>
+          <!-- <v-icon>add</v-icon>
         </v-btn>
-      </v-fab-transition>
+      </v-fab-transition> -->
     </div>
     <add-poll v-if="showAddModal" @close="changeModal(showAddModal)"></add-poll>
   </v-container>
@@ -48,6 +72,15 @@
     data() {
       return{
         polls: [],
+        editedData: '',
+        headers: [
+        {
+          text: 'Poll Name',
+          align: 'left',
+          value: 'name'
+        },
+        { text: 'Actions', value: 'name', sortable: false }
+      ],
         showAddModal: false,
         filter: {},
         url:''
@@ -88,7 +121,35 @@
       changeModal(showAddModal){
         this.showAddModal = false;
         this.$router.go()
-      }
+      },
+      editItem (item) {
+        // this.editedIndex = this.polls.indexOf(item)
+        // this.editedItem = Object.assign({}, item)
+        global.axios.get('/nestedPolls/'+ item.id)
+        .then((response)=>{
+          console.log(response.data)
+          this.editedData = response.data
+          this.$emit('getData', editedData)
+        })
+        this.dialog = true
+      },
+
+      deleteItem (item) {
+        // const index = this.polls.indexOf(item)
+        // confirm('Are you sure you want to delete this item?') && this.polls.splice(index, 1)
+        if(confirm('Are you sure you want to delete this poll?')){
+          global.axios.delete('/polls/'+ item.id)
+          .then((response)=>{
+            console.log(response);
+            location.reload()
+          }).catch((error)=>{
+            console.log(error);
+          })
+          return true;
+        }else{
+          return false;
+        }
+      },
     }
   }
 </script>
