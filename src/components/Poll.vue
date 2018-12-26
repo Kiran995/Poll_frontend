@@ -123,15 +123,7 @@
         this.$router.go()
       },
       editItem (item) {
-        // this.editedIndex = this.polls.indexOf(item)
-        // this.editedItem = Object.assign({}, item)
-        global.axios.get('/nestedPolls/'+ item.id)
-        .then((response)=>{
-          console.log(response.data)
-          this.editedData = response.data
-          this.$emit('getData', editedData)
-        })
-        this.dialog = true
+        this.$router.push({name:'Edit Poll', params:{id:item.id}})
       },
 
       deleteItem (item) {

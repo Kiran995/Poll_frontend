@@ -5,23 +5,29 @@
         <v-card-text>
           <v-layout row wrap class="pa-4">
             <v-flex xs12 sm6 md3>
-              <h1>Create New Poll</h1>
+              <h1 v-if="!$route.params.id">Create New Poll</h1>
+              <h1 v-else>Edit Poll</h1>
               <v-text-field
-              v-model="poll"
+              v-model="name"
               label="solo"
               placeholder="Add Poll Name"
               solo
             ></v-text-field>
             </v-flex>
           </v-layout>
-          <ul v-for='(box, boxId) in boxes' v-bind:key="boxId">
-            <add-questions :value="box.question" @input="updateQuestion($event, boxId)"></add-questions>
-            <v-btn small color="#4EA699" class="white--text" @click="deleteQuestion(boxId)">DELETE QUESTION</v-btn>
+          <ul v-for='(question, questionId) in questions' v-bind:key="questionId">
+            <add-questions 
+              :value="question.question" 
+              @input="updateQuestion($event, questionId)"
+              :prop_question="question.question"
+              :prop_choices="question.options"></add-questions>
+            <v-btn small color="#4EA699" class="white--text" @click="deleteQuestion(questionId, question.id)">DELETE QUESTION</v-btn>
           </ul>
           <v-btn small color="#4EA699" class="white--text" @click="addNewQuestion()">ADD ANOTHER QUESTION</v-btn>
-        <p>Box:{{boxes}}</p>
+        <p>Box:{{questions}}</p>
           <v-layout align-end justify-end>
-            <v-btn color="#4EA699" class="white--text" @click="submit">ADD</v-btn>
+            <v-btn color="#4EA699" class="white--text" @click="submit" v-if="!$route.params.id">ADD</v-btn>
+            <v-btn color="#4EA699" class="white--text" @click="submit" v-else>EDIT</v-btn>
           </v-layout>
         </v-card-text>
       </v-card>
@@ -33,26 +39,19 @@
   export default {
     data(){
       return{
-        poll: '',
-        boxes: [],
-        data: ''
+        name: '',
+        questions: []
       }
     },
     components:{
       AddQuestions
     },
     created(){
-      this.$on('getData', this.editedData)
-    },
-    mounted(){
-      global.axios.get('/nestedPolls/')
-        .then((response)=>{
-          this.data = response.data.results
-          console.log('Data: ', response.data.results);
-        })
-        .catch((error)=>{
-          console.log("Error:", error);
-        })
+      axios.get('/nestedPolls/'+this.$route.params.id)
+      .then((response)=>{
+        this.questions = response.data.questions
+        this.name = response.data.poll_name
+      })
     },
     methods:{
       updateQuestion(value, index){
@@ -60,21 +59,27 @@
         if( typeof(value) != 'string'){
           obj.options = value
         }else{
-          obj.question = value
+          obj.questions = value
         }
         this.$set(this.boxes, index, obj)
       },
       addNewQuestion(){
-        this.boxes.push({
+        this.questions.push({
           question:null
         })
       },
-      deleteQuestion(boxId){
-        this.boxes.splice(boxId, 1)
+      deleteQuestion(questionId, id){
+        this.questions.splice(questionId, 1)
+        global.axios.delete('/questions/'+id)
+        .then((response)=>{
+          console.log(response)
+        }).catch((error)=>{
+          console.log(error)
+        })
       },
       submit(){
-        axios.post('/polls/', {poll_name: this.poll})
-        .then((response)=>{
+        axios.post('/polls/', {poll_name: this.poll})       
+        .then((response)=>{          
           this.boxes.forEach((element) => {
             axios.post('/questions/', {question: element.question, poll:response.data['id']})
             .then((response)=>{
