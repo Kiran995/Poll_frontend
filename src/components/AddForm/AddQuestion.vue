@@ -4,6 +4,7 @@
       <v-layout row wrap>
         <v-flex xs12>
           <span>Add Question</span>
+          {{question}}
           <v-text-field
             v-model="question"
             label="solo"
@@ -54,8 +55,9 @@
     ],
     data() {
       return{
-        question: this.prop_question,
-        choices: this.prop_choices
+        // check if value is null or not
+        question: [] || this.prop_question,
+        choices: [] || this.prop_choices
       }
     },
     watch: {

@@ -55,13 +55,13 @@
     },
     methods:{
       updateQuestion(value, index){
-        let obj = this.boxes[index]
+        let obj = this.questions[index]
         if( typeof(value) != 'string'){
           obj.options = value
         }else{
-          obj.questions = value
+          obj.question = value
         }
-        this.$set(this.boxes, index, obj)
+        this.$set(this.questions, index, obj)
       },
       addNewQuestion(){
         this.questions.push({
@@ -78,21 +78,31 @@
         })
       },
       submit(){
-        axios.post('/polls/', {poll_name: this.poll})       
-        .then((response)=>{          
-          this.boxes.forEach((element) => {
-            axios.post('/questions/', {question: element.question, poll:response.data['id']})
-            .then((response)=>{
-              element.options.forEach((opt)=>{
-                axios.post('/options/', {description:opt.option, count:0, question: response.data['id']})
-                .then(function(response){
-                  console.log(response);
+        if(!this.$route.params.id){
+          axios.post('/polls/', {poll_name: this.name})       
+          .then((response)=>{         
+            this.questions.forEach((element) => {
+              axios.post('/questions/', {question: element.question, poll:response.data['id']})
+              .then((response)=>{
+                element.options.forEach((opt)=>{
+                  axios.post('/options/', {description:opt.description, count:0, question: response.data['id']})
+                  .then(function(response){
+                    console.log(response);
+                  })
                 })
               })
             })
           })
-        })
-        
+        }else{
+          axios.put('/polls/', {poll_name: this.name})
+          this.questions.forEach((element) => {
+            debugger
+            axios.put('/questions/'+element.id, {question: element.question})
+          })
+          this.options.forEach((opt)=>{
+            axios.put('/options/'+opt, {description:opt.description})
+          })
+        }
       }
     }
   }
