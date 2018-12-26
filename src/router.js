@@ -63,6 +63,12 @@ const router = new Router({
       meta:{auth:true}
     },
     {
+      path: '/createPoll/edit/:id',
+      name: 'Edit Poll',
+      component: form,
+      meta:{auth:true}
+    },
+    {
       path: '/addquest',
       name: 'quest',
       component: AddQuestion,

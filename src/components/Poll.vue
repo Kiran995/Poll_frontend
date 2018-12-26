@@ -122,19 +122,16 @@
         this.$router.go()
       },
       editItem: function(item) {
-        // this.editedIndex = this.polls.indexOf(item)
-        // this.editedItem = Object.assign({}, item)
-        global.axios.get('/nestedPolls/'+ item.id)
-        .then((response)=>{
-          console.log(response.data)
-          let editedData = []
-          editedData = response.data
-          this.$emit('getData', editedData)
-          this.$router.push({name:'Create Poll'})
-        })
-        this.dialog = true
+        // global.axios.get('/nestedPolls/'+ item.id)
+        // .then((response)=>{
+        //   console.log(response.data)
+        //   let editedData = []
+        //   editedData = response.data
+        //   this.$root.$emit('getData', editedData)
+        //   this.$router.push({name:'Create Poll'})
+        // })
+        this.$router.push({name:'Edit Poll', params:{id:item.id}})
       },
-
       deleteItem (item) {
         // const index = this.polls.indexOf(item)
         // confirm('Are you sure you want to delete this item?') && this.polls.splice(index, 1)

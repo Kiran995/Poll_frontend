@@ -13,9 +13,10 @@
         </v-flex>
         <span>Add Option</span>
         <ul v-for='(input, index) in inputs' v-bind:key="index">
+          {{input}}
           <v-flex xs12 lg12>
             <v-text-field
-              v-model="input.option"
+              v-model="input.description"
               label="solo"
               placeholder="Add Option"
               solo
@@ -48,10 +49,14 @@
 </template>
 <script>
   export default {
+    props: [
+      'prop_question',
+      'prop_options'
+    ],
     data() {
       return{
-        question: '',
-        inputs: []
+        question: this.prop_question,
+        inputs: this.prop_options
       }
     },
     watch: {
@@ -63,9 +68,9 @@
       }
     },
     methods: {
-      addTextBox(){
+      addTextBox() {
         this.inputs.push({
-          option:null
+          description:null
         })
       },
       deleteTextBox(index){
