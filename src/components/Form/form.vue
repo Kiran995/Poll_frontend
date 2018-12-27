@@ -8,7 +8,7 @@
               <h1 v-if="!$route.params.id">Create New Poll</h1>
               <h1 v-else>Edit Poll</h1>
               <v-text-field
-              v-model="name"
+              v-model="poll_name"
               label="solo"
               placeholder="Add Poll Name"
               solo
@@ -20,11 +20,12 @@
               :value="question.question" 
               @input="updateQuestion($event, questionId)"
               :prop_question="question.question"
-              :prop_choices="question.options"></add-questions>
+              :prop_choices="question.options"
+            ></add-questions>
             <v-btn small color="#4EA699" class="white--text" @click="deleteQuestion(questionId, question.id)">DELETE QUESTION</v-btn>
           </ul>
           <v-btn small color="#4EA699" class="white--text" @click="addNewQuestion()">ADD ANOTHER QUESTION</v-btn>
-        <p>Box:{{questions}}</p>
+        <p>questions:{{questions}}</p>
           <v-layout align-end justify-end>
             <v-btn color="#4EA699" class="white--text" @click="submit" v-if="!$route.params.id">ADD</v-btn>
             <v-btn color="#4EA699" class="white--text" @click="submit" v-else>EDIT</v-btn>
@@ -39,7 +40,7 @@
   export default {
     data(){
       return{
-        name: '',
+        poll_name: '',
         questions: []
       }
     },
@@ -47,11 +48,13 @@
       AddQuestions
     },
     created(){
-      axios.get('/nestedPolls/'+this.$route.params.id)
-      .then((response)=>{
-        this.questions = response.data.questions
-        this.name = response.data.poll_name
-      })
+      if(this.$route.params.id){
+        axios.get('/nestedPolls/'+this.$route.params.id)
+        .then((response)=>{
+          this.questions = response.data.questions
+          this.poll_name = response.data.poll_name
+        })
+      }
     },
     methods:{
       updateQuestion(value, index){
@@ -79,28 +82,17 @@
       },
       submit(){
         if(!this.$route.params.id){
-          axios.post('/polls/', {poll_name: this.name})       
-          .then((response)=>{         
-            this.questions.forEach((element) => {
-              axios.post('/questions/', {question: element.question, poll:response.data['id']})
-              .then((response)=>{
-                element.options.forEach((opt)=>{
-                  axios.post('/options/', {description:opt.description, count:0, question: response.data['id']})
-                  .then(function(response){
-                    console.log(response);
-                  })
-                })
-              })
-            })
+          axios.post('/nestedPolls/', {poll_name:this.poll_name, questions:this.questions})
+          .then((response)=>{
+            debugger
+            console.log(response)
           })
         }else{
-          axios.put('/polls/', {poll_name: this.name})
-          this.questions.forEach((element) => {
-            debugger
-            axios.put('/questions/'+element.id, {question: element.question})
-          })
-          this.options.forEach((opt)=>{
-            axios.put('/options/'+opt, {description:opt.description})
+          axios.put('/nestedPolls/' + this.$route.params.id + '/', {
+            poll_name: this.poll_name,
+            questions:this.questions
+          }).then((response)=>{
+            console.log(response)
           })
         }
       }

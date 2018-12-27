@@ -56,8 +56,8 @@
     data() {
       return{
         // check if value is null or not
-        question: [] || this.prop_question,
-        choices: [] || this.prop_choices
+        question: this.prop_question != null ? this.prop_question : [],
+        choices: this.prop_choices != null ? this.prop_choices : []
       }
     },
     watch: {
@@ -71,7 +71,7 @@
     methods: {
       addTextBox(){
         this.choices.push({
-          description:null
+          description:null,
         })
       },
       deleteTextBox(index, id){
