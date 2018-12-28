@@ -8,11 +8,12 @@
               <h1 v-if="!$route.params.id">Create New Poll</h1>
               <h1 v-else>Edit Poll</h1>
               <v-text-field
-              v-model="poll_name"
-              label="solo"
-              placeholder="Add Poll Name"
-              solo
-            ></v-text-field>
+                v-model="poll_name"
+                label="solo"
+                placeholder="Add Poll Name"
+                solo
+              ></v-text-field>
+              <span>{{error_poll_name}}</span>
             </v-flex>
           </v-layout>
           <ul v-for='(question, questionId) in questions' v-bind:key="questionId">
@@ -21,6 +22,7 @@
               @input="updateQuestion($event, questionId)"
               :prop_question="question.question"
               :prop_choices="question.options"
+              :prop_error="error"
             ></add-questions>
             <v-btn small color="#4EA699" class="white--text" @click="deleteQuestion(questionId, question.id)">DELETE QUESTION</v-btn>
           </ul>
@@ -41,7 +43,12 @@
     data(){
       return{
         poll_name: '',
-        questions: []
+        questions: [],
+        error: {
+                  error_question : '',
+                  error_choice : ''
+                },
+        error_poll_name: ''
       }
     },
     components:{
@@ -84,8 +91,22 @@
         if(!this.$route.params.id){
           axios.post('/nestedPolls/', {poll_name:this.poll_name, questions:this.questions})
           .then((response)=>{
-            debugger
             console.log(response)
+          }).catch((response)=>{
+            console.log(response)
+            if(response.response.data.poll_name){
+              this.error_poll_name = response.response.data.poll_name
+            }if(response.response.data.questions){
+              response.response.data.questions.forEach((question)=>{
+                if(question.question){
+                  this.error.error_question = question.question
+                }if(question.options){
+                  question.options.forEach((option)=>{
+                    this.error.error_choice = option.description
+                  })
+                }
+              })
+            }
           })
         }else{
           axios.put('/nestedPolls/' + this.$route.params.id + '/', {

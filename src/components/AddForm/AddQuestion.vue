@@ -4,13 +4,13 @@
       <v-layout row wrap>
         <v-flex xs12>
           <span>Add Question</span>
-          {{question}}
           <v-text-field
             v-model="question"
             label="solo"
             placeholder="Add Question"
             solo
           ></v-text-field>
+          {{error.error_question}}
         </v-flex>
         <span>Add Option</span>
         <ul v-for='(choice, index) in choices' v-bind:key="index">
@@ -21,6 +21,7 @@
               placeholder="Add Option"
               solo
             ></v-text-field>
+            {{error.error_choice}}
             <v-btn
               fab
               dark
@@ -51,13 +52,14 @@
   export default {
     props:[
       'prop_question',
-      'prop_choices'
+      'prop_choices',
+      'prop_error'
     ],
     data() {
       return{
-        // check if value is null or not
         question: this.prop_question != null ? this.prop_question : [],
-        choices: this.prop_choices != null ? this.prop_choices : []
+        choices: this.prop_choices != null ? this.prop_choices : [],
+        error: this.prop_error
       }
     },
     watch: {
